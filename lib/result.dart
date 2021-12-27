@@ -132,7 +132,7 @@ class _ResultState extends State<Result> {
                       child: Column(
                         children: [
                           Image.asset(
-                            '../assets/pizza.png',
+                            'assets/pizza.png',
                             height: 100.0,
                           ),
                           const SizedBox(
@@ -193,7 +193,7 @@ class _ResultState extends State<Result> {
                       child: Column(
                         children: [
                           Image.asset(
-                            '../assets/tomatoes.png',
+                            'assets/tomatoes.png',
                             height: 100.0,
                           ),
                           const SizedBox(

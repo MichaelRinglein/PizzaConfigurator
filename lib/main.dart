@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 20.0,
               ),
               Image.asset(
-                '../assets/pizza.png',
+                'assets/pizza.png',
                 height: 200.0,
               ),
               const SizedBox(

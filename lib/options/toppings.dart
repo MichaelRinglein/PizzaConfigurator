@@ -136,7 +136,7 @@ class _ToppingsState extends State<Toppings> {
               shrinkWrap: true, // shrinkWrap property of the ListView.builder()
               children: [
                 ...(_options!.map((option) {
-                  var imageURL = '../assets/' + option['image'];
+                  var imageURL = 'assets/' + option['image'];
                   var optionCost = option['cost'];
                   return Padding(
                     padding: const EdgeInsets.all(5.0),
