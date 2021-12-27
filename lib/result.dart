@@ -255,7 +255,7 @@ class _ResultState extends State<Result> {
                         child: Column(
                           children: [
                             Image.asset(
-                              topping.elementAt(2),
+                              'assets/' + topping.elementAt(2),
                               height: 100.0,
                             ),
                             const SizedBox(
