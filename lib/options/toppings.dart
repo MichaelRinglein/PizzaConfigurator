@@ -97,7 +97,7 @@ class _ToppingsState extends State<Toppings> {
                 context: context,
                 builder: (context) => const ConfirmDeletePopup(),
               ),
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              tooltip: 'Back to start',
             );
           },
         ),

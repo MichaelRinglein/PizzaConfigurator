@@ -72,7 +72,7 @@ class _ResultState extends State<Result> {
                 context: context,
                 builder: (context) => const ConfirmDeletePopup(),
               ),
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              tooltip: 'Back to start',
             );
           },
         ),

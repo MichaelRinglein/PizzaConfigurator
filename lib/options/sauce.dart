@@ -67,7 +67,7 @@ class _SauceState extends State<Sauce> {
                 context: context,
                 builder: (context) => const ConfirmDeletePopup(),
               ),
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              tooltip: 'Back to start',
             );
           },
         ),

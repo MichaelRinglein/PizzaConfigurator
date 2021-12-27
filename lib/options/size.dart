@@ -68,7 +68,7 @@ class _SizeState extends State<Size> {
                 context: context,
                 builder: (context) => const ConfirmDeletePopup(),
               ),
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              tooltip: 'Back to start',
             );
           },
         ),
