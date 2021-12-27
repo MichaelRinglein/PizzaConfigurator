@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pizzaconfigurator/main.dart';
-import 'package:pizzaconfigurator/options/sauce.dart';
-import 'package:pizzaconfigurator/options/size.dart';
 import 'package:pizzaconfigurator/result.dart';
-import 'package:responsive_grid_list/responsive_grid_list.dart';
 
 class Toppings extends StatefulWidget {
   final List? createdPizza;
@@ -51,11 +48,9 @@ class _ToppingsState extends State<Toppings> {
 
   List _toppings = [];
 
-  //TODO: Delete initState?
   @protected
   @mustCallSuper
   void initState() {
-    //when coming from another page, init state with value from constructor
     _toppings = widget.createdPizza![2]['toppings'];
   }
 
@@ -103,238 +98,249 @@ class _ToppingsState extends State<Toppings> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: LinearProgressIndicator(
-                value: 0.9,
-                semanticsLabel: 'Linear progress indicator',
-                color: Colors.red,
-                backgroundColor: Colors.grey[200],
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: LinearProgressIndicator(
+              value: 0.9,
+              semanticsLabel: 'Linear progress indicator',
+              color: Colors.red,
+              backgroundColor: Colors.grey[200],
+            ),
+          ),
+          Expanded(
+            child: ListView(children: [
+              ListView(
+                physics: const ScrollPhysics(),
+                shrinkWrap: true,
+                children: [
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Center(
+                    child: Text(
+                      _optionText,
+                      style: const TextStyle(
+                        fontSize: 32,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  ...(_options!.map((option) {
+                    var imageURL = 'assets/' + option['image'];
+                    var optionCost = option['cost'];
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                      child: GestureDetector(
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            color: _toppings.any((element) =>
+                                    element.contains(option['text']))
+                                ? Colors.grey[200]
+                                : Colors.transparent,
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  imageURL,
+                                  height: 60.0,
+                                ),
+                                const SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text(
+                                  option['text'],
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text(
+                                  '\$' + optionCost.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          onTap: () {
+                            _addOption(option['text'], option['cost'],
+                                option['image']);
+                          }),
+                    );
+                  })),
+                ],
               ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            Text(
-              _optionText,
-              style: const TextStyle(
-                fontSize: 32,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OutlinedButton.icon(
+                    icon: const Icon(Icons.delete),
+                    label: const Text(
+                      'Clear all toppings',
+                    ),
+                    onPressed: () => _clearOptions(),
+                    style: ButtonStyle(
+                      side: MaterialStateProperty.all<BorderSide>(
+                          const BorderSide(color: Colors.red)),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red),
+                    ),
+                  ),
+                ],
               ),
+              const SizedBox(
+                height: 20.0,
+              ),
+            ]),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              boxShadow: kElevationToShadow[4],
+              color: Colors.white,
             ),
-            ResponsiveGridList(
-              horizontalGridSpacing: 16, // Horizontal space between grid items
-              verticalGridSpacing: 16, // Vertical space between grid items
-              horizontalGridMargin: 50, // Horizontal space around the grid
-              verticalGridMargin: 50, // Vertical space around the grid
-              minItemWidth:
-                  300, // The minimum item width (can be smaller, if the layout constraints are smaller)
-              maxItemsPerRow:
-                  4, // The maximum items to show in a single row. Can be useful on large screens
-              shrinkWrap: true, // shrinkWrap property of the ListView.builder()
+            child: Column(
               children: [
-                ...(_options!.map((option) {
-                  var imageURL = 'assets/' + option['image'];
-                  var optionCost = option['cost'];
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: GestureDetector(
-                        child: Container(
-                          padding: const EdgeInsets.all(40),
-                          color: _toppings.any(
-                                  (element) => element.contains(option['text']))
-                              ? Colors.grey[200]
-                              : Colors.transparent,
-                          child: Column(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        const Text(
+                          'Your Order:',
+                          style: TextStyle(
+                            fontSize: 26,
+                          ),
+                        ),
+                        Row(
+                          //mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              widget.createdPizza![0]['size'],
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 25.0,
+                            ),
+                            Text(
+                              '\$' + widget.createdPizza![0]['cost'].toString(),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              widget.createdPizza![1]['sauce'],
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 25.0,
+                            ),
+                            Text(
+                              '\$' + widget.createdPizza![1]['cost'].toString(),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ...(_toppings.map((topping) {
+                          return Row(
                             children: [
-                              Image.asset(
-                                imageURL,
-                                height: 100.0,
-                              ),
-                              const SizedBox(
-                                height: 5.0,
-                              ),
                               Text(
-                                option['text'],
+                                topping.elementAt(0),
                                 style: const TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                 ),
                               ),
                               const SizedBox(
-                                height: 5.0,
+                                width: 25.0,
                               ),
                               Text(
-                                '\$' + optionCost.toString(),
+                                topping.elementAt(1) == []
+                                    ? ''
+                                    : '\$' + topping.elementAt(1).toString(),
                                 style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 18,
                                 ),
                               ),
                             ],
-                          ),
-                        ),
-                        onTap: () {
-                          _addOption(
-                              option['text'], option['cost'], option['image']);
-                        }),
-                  );
-                })),
-              ], // The list of widgets in the list
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OutlinedButton.icon(
-                  icon: const Icon(Icons.delete),
-                  label: const Text(
-                    'Clear all toppings',
-                  ),
-                  onPressed: () => _clearOptions(),
-                  style: ButtonStyle(
-                    side: MaterialStateProperty.all<BorderSide>(
-                        const BorderSide(color: Colors.red)),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 40.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    const Text(
-                      'Your Order:',
-                      style: TextStyle(
-                        fontSize: 26,
-                      ),
-                    ),
-                    Row(
-                      //mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          widget.createdPizza![0]['size'],
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 25.0,
-                        ),
-                        Text(
-                          '\$' + widget.createdPizza![0]['cost'].toString(),
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
+                          );
+                        })),
                       ],
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          widget.createdPizza![1]['sauce'],
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 25.0,
-                        ),
-                        Text(
-                          '\$' + widget.createdPizza![1]['cost'].toString(),
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    ),
-                    ...(_toppings.map((topping) {
-                      return Row(
-                        children: [
-                          Text(
-                            topping.elementAt(0),
-                            style: const TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 25.0,
-                          ),
-                          Text(
-                            topping.elementAt(1) == []
-                                ? ''
-                                : '\$' + topping.elementAt(1).toString(),
-                            style: const TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      );
-                    })),
                   ],
                 ),
+                const SizedBox(
+                  height: 5.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.arrow_back),
+                      label: const Text(
+                        'Back',
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                      ),
+                    ),
+                    const SizedBox(width: 15.0),
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.arrow_forward),
+                      label: const Text(
+                        'Next',
+                      ),
+                      onPressed: () {
+                        _toppings.isEmpty
+                            ? ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                                content:
+                                    Text('Please choose at least one topping'),
+                                duration: Duration(seconds: 4),
+                              ))
+                            : Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Result(
+                                        createdPizza: widget.createdPizza)),
+                              );
+                      },
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 5.0,
+                ),
               ],
             ),
-            const SizedBox(
-              height: 40.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.arrow_back),
-                  label: const Text(
-                    'Back',
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                  ),
-                ),
-                const SizedBox(width: 15.0),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.arrow_forward),
-                  label: const Text(
-                    'Next',
-                  ),
-                  onPressed: () {
-                    _toppings.isEmpty
-                        ? ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                            content: Text('Please choose at least one topping'),
-                            duration: Duration(seconds: 4),
-                          ))
-                        : Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Result(createdPizza: widget.createdPizza)),
-                          );
-                  },
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

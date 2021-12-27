@@ -45,7 +45,6 @@ class MyHomePage extends StatefulWidget {
     },
     {
       'toppings': [],
-      //'costs': 0.0,
     },
   ];
 
@@ -60,13 +59,11 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text('Pizza Configurator'),
         automaticallyImplyLeading: false,
-        //TODO: global home button
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Center(
           child: Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(
                 height: 20.0,

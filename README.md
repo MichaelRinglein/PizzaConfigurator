@@ -5,7 +5,7 @@ A product configurator for configuring a pizza.
 
 ## Packages Used (all with Null safety)
 
-- responsive_grid_list
+- flutter_launcher_icons
 
 ## Live Demos
 
