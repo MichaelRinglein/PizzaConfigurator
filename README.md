@@ -10,6 +10,7 @@ A product configurator for configuring a pizza.
 ## Live Demos
 
 - [Web](https://flutterwebapps.com/portfolio/pizza-configurator/#/)
+- [Android] (https://play.google.com/store/apps/details?id=com.strawanzer.pizzaconfigurator)
 
 
 ## Documentation
@@ -18,5 +19,5 @@ Coming Soon
 
 ## To Do Next
 
-- Android Version
-- iOS Version
+- [x] Android Version
+- [ ] iOS Version
