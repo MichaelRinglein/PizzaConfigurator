@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pizzaconfigurator/main.dart';
+import 'package:pizzaconfigurator/options/sauce.dart';
 import 'package:pizzaconfigurator/result.dart';
 
 class Toppings extends StatefulWidget {
@@ -46,11 +47,19 @@ class _ToppingsState extends State<Toppings> {
     },
   ];
 
+  String _size = '';
+  double _costSize = 0.0;
+  String _sauce = '';
+  double _costSauce = 0.0;
   List _toppings = [];
 
   @protected
   @mustCallSuper
   void initState() {
+    _size = widget.createdPizza![0]['size'];
+    _costSize = widget.createdPizza![0]['cost'];
+    _sauce = widget.createdPizza![1]['sauce'];
+    _costSauce = widget.createdPizza![1]['cost'];
     _toppings = widget.createdPizza![2]['toppings'];
   }
 
@@ -207,7 +216,7 @@ class _ToppingsState extends State<Toppings> {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Column(
                       children: [
@@ -218,10 +227,9 @@ class _ToppingsState extends State<Toppings> {
                           ),
                         ),
                         Row(
-                          //mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              widget.createdPizza![0]['size'],
+                              _size.isEmpty ? '' : _size,
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
@@ -230,7 +238,9 @@ class _ToppingsState extends State<Toppings> {
                               width: 25.0,
                             ),
                             Text(
-                              '\$' + widget.createdPizza![0]['cost'].toString(),
+                              _costSize == 0.0
+                                  ? ''
+                                  : '\$' + _costSize.toString(),
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
@@ -240,7 +250,7 @@ class _ToppingsState extends State<Toppings> {
                         Row(
                           children: [
                             Text(
-                              widget.createdPizza![1]['sauce'],
+                              _sauce.isEmpty ? '' : _sauce,
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
@@ -249,7 +259,9 @@ class _ToppingsState extends State<Toppings> {
                               width: 25.0,
                             ),
                             Text(
-                              '\$' + widget.createdPizza![1]['cost'].toString(),
+                              _costSauce == 0.0
+                                  ? ''
+                                  : '\$' + _costSauce.toString(),
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
@@ -295,7 +307,12 @@ class _ToppingsState extends State<Toppings> {
                         'Back',
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Sauce(createdPizza: widget.createdPizza)),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor:

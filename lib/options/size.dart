@@ -31,19 +31,25 @@ class _SizeState extends State<Size> {
   ];
 
   String _size = '';
-  double _cost = 0.0;
+  double _costSize = 0.0;
+  String _sauce = '';
+  double _costSauce = 0.0;
+  List _toppings = [];
 
   @protected
   @mustCallSuper
   void initState() {
     _size = widget.createdPizza![0]['size'];
-    _cost = widget.createdPizza![0]['cost'];
+    _costSize = widget.createdPizza![0]['cost'];
+    _sauce = widget.createdPizza![1]['sauce'];
+    _costSauce = widget.createdPizza![1]['cost'];
+    _toppings = widget.createdPizza![2]['toppings'];
   }
 
   _addOption(String chosenOption, double chosenCost) {
     setState(() {
       _size = chosenOption;
-      _cost = chosenCost;
+      _costSize = chosenCost;
       widget.createdPizza![0]['size'] = chosenOption;
       widget.createdPizza![0]['cost'] = chosenCost;
     });
@@ -171,7 +177,7 @@ class _SizeState extends State<Size> {
                         Row(
                           children: [
                             Text(
-                              _size,
+                              _size.isEmpty ? '' : _size,
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
@@ -180,13 +186,59 @@ class _SizeState extends State<Size> {
                               width: 25.0,
                             ),
                             Text(
-                              _cost == 0.0 ? '' : '\$' + _cost.toString(),
+                              _costSize == 0.0
+                                  ? ''
+                                  : '\$' + _costSize.toString(),
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
                             ),
                           ],
                         ),
+                        Row(
+                          children: [
+                            Text(
+                              _sauce.isEmpty ? '' : _sauce,
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 25.0,
+                            ),
+                            Text(
+                              _costSauce == 0.0
+                                  ? ''
+                                  : '\$' + _costSauce.toString(),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ...(_toppings.map((topping) {
+                          return Row(
+                            children: [
+                              Text(
+                                topping.elementAt(0),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 25.0,
+                              ),
+                              Text(
+                                topping.elementAt(1) == []
+                                    ? ''
+                                    : '\$' + topping.elementAt(1).toString(),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          );
+                        })),
                       ],
                     ),
                     const SizedBox(

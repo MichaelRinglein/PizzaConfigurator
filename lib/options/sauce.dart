@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pizzaconfigurator/main.dart';
+import 'package:pizzaconfigurator/options/size.dart';
 import 'package:pizzaconfigurator/options/toppings.dart';
 
 class Sauce extends StatefulWidget {
@@ -26,22 +27,26 @@ class _SauceState extends State<Sauce> {
     },
   ];
 
+  String _size = '';
+  double _costSize = 0.0;
   String _sauce = '';
-  double _cost = 0.0;
+  double _costSauce = 0.0;
   List _toppings = [];
 
   @protected
   @mustCallSuper
   void initState() {
+    _size = widget.createdPizza![0]['size'];
+    _costSize = widget.createdPizza![0]['cost'];
     _sauce = widget.createdPizza![1]['sauce'];
-    _cost = widget.createdPizza![1]['cost'];
+    _costSauce = widget.createdPizza![1]['cost'];
     _toppings = widget.createdPizza![2]['toppings'];
   }
 
   _addOption(String chosenOption, double chosenCost) {
     setState(() {
       _sauce = chosenOption;
-      _cost = chosenCost;
+      _costSauce = chosenCost;
       widget.createdPizza![1]['sauce'] = chosenOption;
       widget.createdPizza![1]['cost'] = chosenCost;
     });
@@ -164,7 +169,7 @@ class _SauceState extends State<Sauce> {
                         Row(
                           children: [
                             Text(
-                              widget.createdPizza![0]['size'],
+                              _size.isEmpty ? '' : _size,
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
@@ -173,7 +178,9 @@ class _SauceState extends State<Sauce> {
                               width: 25.0,
                             ),
                             Text(
-                              '\$' + widget.createdPizza![0]['cost'].toString(),
+                              _costSize == 0.0
+                                  ? ''
+                                  : '\$' + _costSize.toString(),
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
@@ -183,7 +190,7 @@ class _SauceState extends State<Sauce> {
                         Row(
                           children: [
                             Text(
-                              _sauce,
+                              _sauce.isEmpty ? '' : _sauce,
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
@@ -192,13 +199,38 @@ class _SauceState extends State<Sauce> {
                               width: 25.0,
                             ),
                             Text(
-                              _cost == 0.0 ? '' : '\$' + _cost.toString(),
+                              _costSauce == 0.0
+                                  ? ''
+                                  : '\$' + _costSauce.toString(),
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
                             ),
                           ],
                         ),
+                        ...(_toppings.map((topping) {
+                          return Row(
+                            children: [
+                              Text(
+                                topping.elementAt(0),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 25.0,
+                              ),
+                              Text(
+                                topping.elementAt(1) == []
+                                    ? ''
+                                    : '\$' + topping.elementAt(1).toString(),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          );
+                        })),
                       ],
                     ),
                   ],
@@ -215,7 +247,12 @@ class _SauceState extends State<Sauce> {
                         'Back',
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Size(createdPizza: widget.createdPizza)),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor:
