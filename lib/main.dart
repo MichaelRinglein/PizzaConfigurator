@@ -1,10 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:pizzaconfigurator/options/size.dart';
 import 'package:pizzaconfigurator/options/sauce.dart';
 import 'package:pizzaconfigurator/options/toppings.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -46,6 +52,72 @@ class MyHomePage extends StatefulWidget {
     {
       'toppings': [],
     },
+  ];
+
+  List availableOptions = [
+    {
+      'size': {
+        {
+          'text': 'Small (25cm)',
+          'cost': 2.0,
+          'image': 'pizza.png',
+        },
+        {
+          'text': 'Medium (30cm)',
+          'cost': 3.50,
+          'image': 'pizza.png',
+        },
+        {
+          'text': 'Large (35cm)',
+          'cost': 4.0,
+          'image': 'pizza.png',
+        },
+      },
+      'sauce': {
+        {
+          'text': 'Tomato sauce',
+          'cost': 0.5,
+          'image': 'tomatoes.png',
+        },
+        {
+          'text': 'Tomato sauce spicy',
+          'cost': 0.5,
+          'image': 'tomatoes.png',
+        },
+      },
+      'toppings': {
+        {
+          'text': 'Bacon',
+          'cost': 2.7,
+          'image': 'bacon.png',
+        },
+        {
+          'text': 'Bellpepper',
+          'cost': 0.8,
+          'image': 'bellpepper.png',
+        },
+        {
+          'text': 'Olives',
+          'cost': 1.5,
+          'image': 'olives.png',
+        },
+        {
+          'text': 'Onions',
+          'cost': 0.6,
+          'image': 'onions.png',
+        },
+        {
+          'text': 'Pineapple',
+          'cost': 1.6,
+          'image': 'pineapple.png',
+        },
+        {
+          'text': 'Extra Cheese',
+          'cost': 1.2,
+          'image': 'cheese.png',
+        },
+      },
+    }
   ];
 
   @override
@@ -93,8 +165,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            Size(createdPizza: widget.createdPizza)),
+                      builder: (context) => Size(
+                        createdPizza: widget.createdPizza,
+                        availableOptions: widget.availableOptions,
+                      ),
+                    ),
                   );
                 },
                 style: ButtonStyle(

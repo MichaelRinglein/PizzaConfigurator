@@ -1,10 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pizzaconfigurator/main.dart';
 import 'package:pizzaconfigurator/options/sauce.dart';
+import 'package:pizzaconfigurator/single_option.dart';
 
 class Size extends StatefulWidget {
   final List? createdPizza;
-  const Size({Key? key, this.createdPizza}) : super(key: key);
+  final List? availableOptions;
+  const Size({
+    Key? key,
+    this.createdPizza,
+    this.availableOptions,
+  }) : super(key: key);
 
   @override
   State<Size> createState() => _SizeState();
@@ -12,29 +20,14 @@ class Size extends StatefulWidget {
 
 class _SizeState extends State<Size> {
   final String _optionText = '1. Choose your size';
-  final List? _options = [
-    {
-      'text': 'Small (25cm)',
-      'cost': 2.0,
-      'image': 'pizza.png',
-    },
-    {
-      'text': 'Medium (30cm)',
-      'cost': 3.50,
-      'image': 'pizza.png',
-    },
-    {
-      'text': 'Large (35cm)',
-      'cost': 4.0,
-      'image': 'pizza.png',
-    },
-  ];
 
   String _size = '';
   double _costSize = 0.0;
   String _sauce = '';
   double _costSauce = 0.0;
   List _toppings = [];
+
+  List chosenOption = ['Hello', 'bra'];
 
   @protected
   @mustCallSuper
@@ -46,13 +39,15 @@ class _SizeState extends State<Size> {
     _toppings = widget.createdPizza![2]['toppings'];
   }
 
-  _addOption(String chosenOption, double chosenCost) {
+  addOption(String chosenOption, double chosenCost) {
     setState(() {
       _size = chosenOption;
       _costSize = chosenCost;
       widget.createdPizza![0]['size'] = chosenOption;
       widget.createdPizza![0]['cost'] = chosenCost;
     });
+
+    print('addOption fired');
   }
 
   @override
@@ -88,69 +83,18 @@ class _SizeState extends State<Size> {
             ),
           ),
           Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                const SizedBox(
-                  height: 10.0,
-                ),
-                Center(
-                  child: Text(
-                    _optionText,
-                    style: const TextStyle(
-                      fontSize: 32,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                ...(_options!.map(
-                  (option) {
-                    var imageURL = 'assets/' + option['image'];
-                    var optionCost = option['cost'];
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                      child: GestureDetector(
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            color: _size == option['text']
-                                ? Colors.grey[200]
-                                : Colors.transparent,
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  imageURL,
-                                  height: 60.0,
-                                ),
-                                const SizedBox(
-                                  height: 5.0,
-                                ),
-                                Text(
-                                  option['text'],
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 5.0,
-                                ),
-                                Text(
-                                  '\$' + optionCost.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          onTap: () {
-                            _addOption(option['text'], option['cost']);
-                          }),
-                    );
-                  },
-                )),
-              ],
+            child: SingleOption(
+              //addOptions: () => print('hello world'),
+              onCountChange: (List pizza) {
+                setState(() {
+                  chosenOption = pizza;
+                });
+                //print('val is $val');
+                //print('count is $count');
+              },
+              //onCountSelected: () => print('onCountSelected fired'),
+              createdPizza: widget.createdPizza,
+              option: 'size',
             ),
           ),
           Container(
@@ -174,6 +118,39 @@ class _SizeState extends State<Size> {
                             fontSize: 26,
                           ),
                         ),
+                        /*
+                        Row(
+                          children: [
+                            Text(chosenOption.toString()),
+                          ],
+                        ),
+                        */
+                        ...(chosenOption.map((option) {
+                          return Row(
+                            children: [
+                              /*
+                              ...(option.map((singleOption) {
+                                return Text(singleOption.toString());
+                              })),
+                              */
+                              Text(
+                                option.toString(),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 25.0,
+                              ),
+                              Text(
+                                option.toString(),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          );
+                        })),
                         Row(
                           children: [
                             Text(

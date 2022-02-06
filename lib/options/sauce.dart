@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:pizzaconfigurator/main.dart';
 import 'package:pizzaconfigurator/options/size.dart';
 import 'package:pizzaconfigurator/options/toppings.dart';
+import 'package:pizzaconfigurator/single_option.dart';
 
 class Sauce extends StatefulWidget {
   final List? createdPizza;
-  const Sauce({Key? key, this.createdPizza}) : super(key: key);
+  final List? availableOptions;
+  const Sauce({Key? key, this.createdPizza, this.availableOptions})
+      : super(key: key);
 
   @override
   State<Sauce> createState() => _SauceState();
@@ -13,19 +16,6 @@ class Sauce extends StatefulWidget {
 
 class _SauceState extends State<Sauce> {
   final String _optionText = '2. Choose your sauce';
-
-  final List? _options = [
-    {
-      'text': 'Tomato sauce',
-      'cost': 0.5,
-      'image': 'tomatoes.png',
-    },
-    {
-      'text': 'Tomato sauce spicy',
-      'cost': 0.5,
-      'image': 'tomatoes.png',
-    },
-  ];
 
   String _size = '';
   double _costSize = 0.0;
@@ -85,67 +75,9 @@ class _SauceState extends State<Sauce> {
             ),
           ),
           Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                const SizedBox(
-                  height: 10.0,
-                ),
-                Center(
-                  child: Text(
-                    _optionText,
-                    style: const TextStyle(
-                      fontSize: 32,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                ...(_options!.map((option) {
-                  var imageURL = 'assets/' + option['image'];
-                  var optionCost = option['cost'];
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                    child: GestureDetector(
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          color: _sauce == option['text']
-                              ? Colors.grey[200]
-                              : Colors.transparent,
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                imageURL,
-                                height: 60.0,
-                              ),
-                              const SizedBox(
-                                height: 5.0,
-                              ),
-                              Text(
-                                option['text'],
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5.0,
-                              ),
-                              Text(
-                                '\$' + optionCost.toString(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        onTap: () {
-                          _addOption(option['text'], option['cost']);
-                        }),
-                  );
-                })),
-              ],
+            child: SingleOption(
+              createdPizza: widget.createdPizza,
+              option: 'sauce',
             ),
           ),
           Container(
