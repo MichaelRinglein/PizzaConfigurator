@@ -1,287 +1,196 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pizzaconfigurator/database/firestore_methods.dart';
 import 'package:pizzaconfigurator/main.dart';
 import 'package:pizzaconfigurator/options/sauce.dart';
 import 'package:pizzaconfigurator/single_option.dart';
 
 class Size extends StatefulWidget {
-  final List? createdPizza;
-  final List? availableOptions;
-  const Size({
-    Key? key,
-    this.createdPizza,
-    this.availableOptions,
-  }) : super(key: key);
+  final String? autoId;
+  const Size({Key? key, this.autoId}) : super(key: key);
 
   @override
   State<Size> createState() => _SizeState();
 }
 
 class _SizeState extends State<Size> {
-  final String _optionText = '1. Choose your size';
+  final FirebaseServices _firebaseServices = FirebaseServices();
 
-  String _size = '';
-  double _costSize = 0.0;
-  String _sauce = '';
-  double _costSauce = 0.0;
-  List _toppings = [];
+  //final String _optionText = '1. Choose your size';
 
-  List chosenOption = ['Hello', 'bra'];
-
-  @protected
-  @mustCallSuper
-  void initState() {
-    _size = widget.createdPizza![0]['size'];
-    _costSize = widget.createdPizza![0]['cost'];
-    _sauce = widget.createdPizza![1]['sauce'];
-    _costSauce = widget.createdPizza![1]['cost'];
-    _toppings = widget.createdPizza![2]['toppings'];
-  }
-
-  addOption(String chosenOption, double chosenCost) {
-    setState(() {
-      _size = chosenOption;
-      _costSize = chosenCost;
-      widget.createdPizza![0]['size'] = chosenOption;
-      widget.createdPizza![0]['cost'] = chosenCost;
-    });
-
-    print('addOption fired');
-  }
+  List chosenOption = [];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Pizza Configurator',
-        ),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.home),
-              onPressed: () => showDialog(
-                context: context,
-                builder: (context) => const ConfirmDeletePopup(),
+    return StreamBuilder<DocumentSnapshot>(
+        stream: _firebaseServices.getPizza(widget.autoId!),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text('Something went wrong');
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text("Loading");
+          }
+
+          if (snapshot.hasData) {
+            print('snapshot.data is: ' + snapshot.data!.data().toString());
+          }
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text(
+                'Pizza Configurator',
               ),
-              tooltip: 'Back to start',
-            );
-          },
-        ),
-        automaticallyImplyLeading: false,
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: LinearProgressIndicator(
-              value: 0.3,
-              semanticsLabel: 'Linear progress indicator',
-              color: Colors.red,
-              backgroundColor: Colors.grey[200],
+              leading: Builder(
+                builder: (BuildContext context) {
+                  return IconButton(
+                    icon: const Icon(Icons.home),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => const ConfirmDeletePopup(),
+                    ),
+                    tooltip: 'Back to start',
+                  );
+                },
+              ),
+              automaticallyImplyLeading: false,
             ),
-          ),
-          Expanded(
-            child: SingleOption(
-              //addOptions: () => print('hello world'),
-              onCountChange: (List pizza) {
-                setState(() {
-                  chosenOption = pizza;
-                });
-                //print('val is $val');
-                //print('count is $count');
-              },
-              //onCountSelected: () => print('onCountSelected fired'),
-              createdPizza: widget.createdPizza,
-              option: 'size',
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              boxShadow: kElevationToShadow[4],
-              color: Colors.white,
-            ),
-            child: Column(
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    const SizedBox(
-                      width: 15.0,
-                    ),
-                    Column(
-                      children: [
-                        const Text(
-                          'Your Order:',
-                          style: TextStyle(
-                            fontSize: 26,
+                Center(
+                  child: LinearProgressIndicator(
+                    value: 0.3,
+                    semanticsLabel: 'Linear progress indicator',
+                    color: Colors.red,
+                    backgroundColor: Colors.grey[200],
+                  ),
+                ),
+                Expanded(
+                  child: SingleOption(
+                    autoId: widget.autoId,
+                    onCountChange: (List pizza) {
+                      setState(() {
+                        chosenOption = pizza;
+                      });
+                    },
+                    option: 'size',
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: kElevationToShadow[4],
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          const SizedBox(
+                            width: 15.0,
                           ),
-                        ),
-                        /*
-                        Row(
-                          children: [
-                            Text(chosenOption.toString()),
-                          ],
-                        ),
-                        */
-                        ...(chosenOption.map((option) {
-                          return Row(
+                          Column(
                             children: [
-                              /*
-                              ...(option.map((singleOption) {
-                                return Text(singleOption.toString());
-                              })),
-                              */
-                              Text(
-                                option.toString(),
-                                style: const TextStyle(
-                                  fontSize: 18,
+                              const Text(
+                                'Your Order:',
+                                style: TextStyle(
+                                  fontSize: 26,
                                 ),
                               ),
-                              const SizedBox(
-                                width: 25.0,
-                              ),
-                              Text(
-                                option.toString(),
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    snapshot.data!.get('size'),
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 25.0,
+                                  ),
+                                  Text(
+                                    snapshot.data!.get('sizeCost') == 0.0
+                                        ? ''
+                                        : '\$' +
+                                            snapshot.data!
+                                                .get('sizeCost')
+                                                .toString(),
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
-                          );
-                        })),
-                        Row(
-                          children: [
-                            Text(
-                              _size.isEmpty ? '' : _size,
-                              style: const TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 25.0,
-                            ),
-                            Text(
-                              _costSize == 0.0
-                                  ? ''
-                                  : '\$' + _costSize.toString(),
-                              style: const TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              _sauce.isEmpty ? '' : _sauce,
-                              style: const TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 25.0,
-                            ),
-                            Text(
-                              _costSauce == 0.0
-                                  ? ''
-                                  : '\$' + _costSauce.toString(),
-                              style: const TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ],
-                        ),
-                        ...(_toppings.map((topping) {
-                          return Row(
-                            children: [
-                              Text(
-                                topping.elementAt(0),
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 25.0,
-                              ),
-                              Text(
-                                topping.elementAt(1) == []
-                                    ? ''
-                                    : '\$' + topping.elementAt(1).toString(),
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ],
-                          );
-                        })),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 15.0,
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 5.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.arrow_back),
-                      label: const Text(
-                        'Back',
+                          ),
+                          const SizedBox(
+                            width: 15.0,
+                          ),
+                        ],
                       ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.red),
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
+                      const SizedBox(
+                        height: 5.0,
                       ),
-                    ),
-                    const SizedBox(width: 15.0),
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.arrow_forward),
-                      label: const Text(
-                        'Next',
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton.icon(
+                            icon: const Icon(Icons.arrow_back),
+                            label: const Text(
+                              'Back',
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.red),
+                              foregroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.white),
+                            ),
+                          ),
+                          const SizedBox(width: 15.0),
+                          ElevatedButton.icon(
+                            icon: const Icon(Icons.arrow_forward),
+                            label: const Text(
+                              'Next',
+                            ),
+                            onPressed: () {
+                              snapshot.data!.get('size') == ''
+                                  ? ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                      content: Text('Please choose a size'),
+                                      duration: Duration(seconds: 3),
+                                    ))
+                                  : Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Sauce()),
+                                    );
+                            },
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.red),
+                              foregroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.white),
+                            ),
+                          ),
+                        ],
                       ),
-                      onPressed: () {
-                        _size == ''
-                            ? ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                                content: Text('Please choose a size'),
-                                duration: Duration(seconds: 3),
-                              ))
-                            : Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Sauce(
-                                        createdPizza: widget.createdPizza)),
-                              );
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.red),
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
+                      const SizedBox(
+                        height: 5.0,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 5.0,
+                    ],
+                  ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 }
 

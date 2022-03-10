@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:flutter/material.dart';
+
+import 'package:pizzaconfigurator/database/firestore_methods.dart';
 import 'package:pizzaconfigurator/options/size.dart';
 import 'package:pizzaconfigurator/options/sauce.dart';
 import 'package:pizzaconfigurator/options/toppings.dart';
@@ -125,6 +127,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  FirebaseServices _firebaseServices = FirebaseServices();
+  final String autoId = DateTime.now().microsecondsSinceEpoch.toString();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,14 +166,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   'Start!',
                   style: TextStyle(fontSize: 18),
                 ),
-                onPressed: () {
+                onPressed: () async {
+                  await _firebaseServices.createNewPizza(autoId);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Size(
-                        createdPizza: widget.createdPizza,
-                        availableOptions: widget.availableOptions,
-                      ),
+                      builder: (context) => Size(autoId: autoId),
                     ),
                   );
                 },

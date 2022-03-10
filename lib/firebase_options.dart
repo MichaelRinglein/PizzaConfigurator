@@ -39,7 +39,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyAxGC_tWMrqmj-XrhBaQ5Xq56ZkGffb3D4',
-    appId: '1:490828871968:web:0953e02b7fe5c3c2473f45',
+    appId: '1:490828871968:web:ef126297b3fd05ca473f45',
     messagingSenderId: '490828871968',
     projectId: 'pizzaconfigurator',
     authDomain: 'pizzaconfigurator.firebaseapp.com',
@@ -48,7 +48,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCSCWJNJWGaNVYQ2EGLdo0bOiXyz6o72Nw',
-    appId: '1:490828871968:android:75b96eb4dec126be473f45',
+    appId: '1:490828871968:android:42fea0dc27bf3a5e473f45',
     messagingSenderId: '490828871968',
     projectId: 'pizzaconfigurator',
     storageBucket: 'pizzaconfigurator.appspot.com',
@@ -56,11 +56,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDg0PmXkZcwCdrbJoQpcAjLCQVkup_WaBQ',
-    appId: '1:490828871968:ios:2188ba6f69ce7117473f45',
+    appId: '1:490828871968:ios:4652b5bc364d008e473f45',
     messagingSenderId: '490828871968',
     projectId: 'pizzaconfigurator',
     storageBucket: 'pizzaconfigurator.appspot.com',
-    iosClientId: '490828871968-bhafb91ram6pf08f1ingt5uscl5o0sm5.apps.googleusercontent.com',
-    iosBundleId: 'com.strawanzer.',
+    iosClientId: '490828871968-tv3r93urccrsp69rbol2sp8o301tbjig.apps.googleusercontent.com',
+    iosBundleId: 'com.strawanzer',
   );
 }

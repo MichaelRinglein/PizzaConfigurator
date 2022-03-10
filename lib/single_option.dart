@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:pizzaconfigurator/database/firestore_methods.dart';
 import 'package:pizzaconfigurator/options/size.dart';
 
 class SingleOption extends StatefulWidget {
+  final String? autoId;
   final VoidCallback? onCountSelected;
   final Function(List)? onCountChange;
-  //final Function? addOptions;
-  final List? createdPizza;
   final String? option;
   const SingleOption({
     Key? key,
-    this.createdPizza,
+    this.autoId,
     this.option,
     this.onCountSelected,
     @required this.onCountChange,
@@ -23,6 +23,8 @@ class SingleOption extends StatefulWidget {
 }
 
 class _SingleOptionState extends State<SingleOption> {
+  FirebaseServices _firebaseServices = FirebaseServices();
+
   final List size = [
     {
       'text': 'Small (25cm)',
@@ -95,36 +97,13 @@ class _SingleOptionState extends State<SingleOption> {
   double _costSauce = 0.0;
   List _toppings = [];
 
-  @protected
-  @mustCallSuper
-  void initState() {
-    _size = widget.createdPizza![0]['size'];
-    _costSize = widget.createdPizza![0]['cost'];
-    _sauce = widget.createdPizza![1]['sauce'];
-    _costSauce = widget.createdPizza![1]['cost'];
-    _toppings = widget.createdPizza![2]['toppings'];
-  }
-
-/*
-  Stream updateOptions(chosenOption, chosenCost) async* {
-    yield chosenOption;
-    yield chosenCost;
-  }
-  */
-
-  addOption(String option, String chosenOption, double chosenCost) {
-    //TODO set state according to option
-
+  markOption(String option, String chosenOption, double chosenCost) {
     if (option == 'size') {
       setState(() {
         _size = chosenOption;
         _costSize = chosenCost;
-        widget.createdPizza![0]['size'] = chosenOption;
-        widget.createdPizza![0]['cost'] = chosenCost;
       });
     }
-    //print('chosenOption is: $chosenOption');
-    //widget.onOptionAdded!;
   }
 
   @override
@@ -139,7 +118,8 @@ class _SingleOptionState extends State<SingleOption> {
       ),
       Center(
         child: Text(
-          widget.option!,
+          widget.option!.replaceFirst(widget.option.toString()[0],
+              widget.option.toString()[0].toUpperCase()),
           style: const TextStyle(
             fontSize: 32,
           ),
@@ -187,10 +167,15 @@ class _SingleOptionState extends State<SingleOption> {
                     ],
                   ),
                 ),
-                onTap: () {
-                  addOption(widget.option!, option['text'], option['cost']);
-                  //widget.onCountSelected!();
-                  widget.onCountChange!(widget.createdPizza!);
+                onTap: () async {
+                  await _firebaseServices.addOption(
+                    widget.autoId!,
+                    'size',
+                    'sizeCost',
+                    option['text'],
+                    option['cost'],
+                  );
+                  markOption(widget.option!, option['text'], option['cost']);
                 }),
           );
         },

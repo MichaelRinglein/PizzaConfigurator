@@ -76,7 +76,7 @@ class _SauceState extends State<Sauce> {
           ),
           Expanded(
             child: SingleOption(
-              createdPizza: widget.createdPizza,
+              //createdPizza: widget.createdPizza,
               option: 'sauce',
             ),
           ),
@@ -180,11 +180,10 @@ class _SauceState extends State<Sauce> {
                       ),
                       onPressed: () {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  Size(createdPizza: widget.createdPizza)),
-                        );
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Size(),
+                            ));
                       },
                       style: ButtonStyle(
                         backgroundColor:
