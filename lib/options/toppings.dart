@@ -307,12 +307,15 @@ class _ToppingsState extends State<Toppings> {
                         'Back',
                       ),
                       onPressed: () {
+                        /*
                         Navigator.push(
                           context,
+                          
                           MaterialPageRoute(
                               builder: (context) =>
-                                  Sauce(createdPizza: widget.createdPizza)),
+                                  Sauce(autoId: widget.createdPizza)),
                         );
+                        */
                       },
                       style: ButtonStyle(
                         backgroundColor:

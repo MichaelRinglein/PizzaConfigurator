@@ -16,9 +16,9 @@ class FirebaseServices {
         'size': '',
         'sizeCost': 0.0,
         'sauce': '',
+        'sauceCost': 0.0,
         'toppings': [],
       });
-      print('createNewPizza() with autoId $autoId');
     } catch (e) {
       print('Error while createNewPizza(): ' + e.toString());
     }
@@ -29,16 +29,13 @@ class FirebaseServices {
   Future<void> addOption(String autoId, String part, String cost, String option,
       double optionCost) async {
     try {
-      await _reference.doc(autoId).set({part: option, cost: optionCost});
-      print(
-          'addOption() with autoId $autoId, part $part and option $option with cost $cost of $optionCost');
+      await _reference.doc(autoId).update({part: option, cost: optionCost});
     } catch (e) {
       'Error while addOption(): ' + e.toString();
     }
   }
 
   //get the current pizza via stream
-  // TODO: fix this autoID
   Stream<DocumentSnapshot> getPizza(String autoId) {
     return _reference.doc(autoId).snapshots();
   }

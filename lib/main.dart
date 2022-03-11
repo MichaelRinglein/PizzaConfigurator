@@ -4,7 +4,7 @@ import 'firebase_options.dart';
 
 import 'package:pizzaconfigurator/database/firestore_methods.dart';
 import 'package:pizzaconfigurator/options/size.dart';
-import 'package:pizzaconfigurator/options/sauce.dart';
+import 'package:pizzaconfigurator/options/old_sauce.dart';
 import 'package:pizzaconfigurator/options/toppings.dart';
 
 void main() async {

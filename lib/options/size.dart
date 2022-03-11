@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pizzaconfigurator/database/firestore_methods.dart';
+import 'package:pizzaconfigurator/global/loading.dart';
 import 'package:pizzaconfigurator/main.dart';
 import 'package:pizzaconfigurator/options/sauce.dart';
+import 'package:pizzaconfigurator/order_progress.dart';
 import 'package:pizzaconfigurator/single_option.dart';
 
 class Size extends StatefulWidget {
@@ -29,20 +31,23 @@ class _SizeState extends State<Size> {
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Text('Something went wrong');
+            return const Text('Something went wrong');
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
+            return Column(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              children: const <Widget>[
+                Loading(),
+              ],
+            );
           }
 
-          if (snapshot.hasData) {
-            print('snapshot.data is: ' + snapshot.data!.data().toString());
-          }
+          if (snapshot.hasData) {}
           return Scaffold(
             appBar: AppBar(
               title: const Text(
-                'Pizza Configurator',
+                'Pizza Configurator - Choose your size',
               ),
               leading: Builder(
                 builder: (BuildContext context) {
@@ -101,29 +106,8 @@ class _SizeState extends State<Size> {
                                   fontSize: 26,
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  Text(
-                                    snapshot.data!.get('size'),
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 25.0,
-                                  ),
-                                  Text(
-                                    snapshot.data!.get('sizeCost') == 0.0
-                                        ? ''
-                                        : '\$' +
-                                            snapshot.data!
-                                                .get('sizeCost')
-                                                .toString(),
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ],
+                              OrderProgress(
+                                autoId: widget.autoId,
                               ),
                             ],
                           ),
@@ -169,7 +153,8 @@ class _SizeState extends State<Size> {
                                   : Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => Sauce()),
+                                          builder: (context) =>
+                                              Sauce(autoId: widget.autoId!)),
                                     );
                             },
                             style: ButtonStyle(

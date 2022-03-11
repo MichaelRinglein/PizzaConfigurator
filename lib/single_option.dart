@@ -103,6 +103,11 @@ class _SingleOptionState extends State<SingleOption> {
         _size = chosenOption;
         _costSize = chosenCost;
       });
+    } else if (option == 'sauce') {
+      setState(() {
+        _sauce = chosenOption;
+        _costSauce = chosenCost;
+      });
     }
   }
 
@@ -137,7 +142,7 @@ class _SingleOptionState extends State<SingleOption> {
             child: GestureDetector(
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  color: _size == option['text']
+                  color: _size == option['text'] || _sauce == option['text']
                       ? Colors.grey[200]
                       : Colors.transparent,
                   child: Column(
@@ -168,13 +173,23 @@ class _SingleOptionState extends State<SingleOption> {
                   ),
                 ),
                 onTap: () async {
-                  await _firebaseServices.addOption(
-                    widget.autoId!,
-                    'size',
-                    'sizeCost',
-                    option['text'],
-                    option['cost'],
-                  );
+                  if (widget.option == 'size') {
+                    await _firebaseServices.addOption(
+                      widget.autoId!,
+                      'size',
+                      'sizeCost',
+                      option['text'],
+                      option['cost'],
+                    );
+                  } else if (widget.option == 'sauce') {
+                    await _firebaseServices.addOption(
+                      widget.autoId!,
+                      'sauce',
+                      'sauceCost',
+                      option['text'],
+                      option['cost'],
+                    );
+                  }
                   markOption(widget.option!, option['text'], option['cost']);
                 }),
           );
