@@ -32,6 +32,8 @@ After the toppings are chosen, the user gets redirected to a overview of the con
 After reading about the pizza, are you hungry yet? Behold, there is more to come!
 
 ### State Management
+
+#### Navigating the Screens
 The App beginns in `main.dart`. On click on the 'Start!' button, a pizza is initialized via the `createNewPizza()` method in `firestore_methods`. 
 The pizza is a document with the fields 'size', 'sauce' and 'toppings'.
 The id for the document is the `autoId` which is generated via a `DateTime.now().microsecondsSinceEpoch`. This `autoId` is used throuout the following steps.
@@ -43,6 +45,10 @@ On click on one of the options, the pizza in the FireStore is updated via the `a
 
 The same flow applies also to the following `Sauce` and `Toppings` Widgets.
 
+#### Order Progress among the Screens (order_progress.dart)
+In the bottom of the Screens size, sauce and toppings is always the order process visible (items that the user has chosen). 
+It's in the file `order_progress.dart`. 
+This is a `StreamBuilder` which takes the `getPizza()` from `firestore_methods` as well.
 
 ## To Do Next
 
