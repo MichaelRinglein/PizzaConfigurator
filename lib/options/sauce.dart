@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pizzaconfigurator/database/firestore_methods.dart';
 import 'package:pizzaconfigurator/global/loading.dart';
 import 'package:pizzaconfigurator/main.dart';
+import 'package:pizzaconfigurator/options/toppings.dart';
 import 'package:pizzaconfigurator/order_progress.dart';
 import 'package:pizzaconfigurator/single_option.dart';
 
@@ -152,7 +153,8 @@ class _SauceState extends State<Sauce> {
                                   : Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => Sauce()),
+                                          builder: (context) =>
+                                              Toppings(autoId: widget.autoId!)),
                                     );
                             },
                             style: ButtonStyle(

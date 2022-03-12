@@ -35,6 +35,25 @@ class FirebaseServices {
     }
   }
 
+  Future<void> addTopping(
+      String autoId, String part, List topping, double toppingCost) async {
+    try {
+      await _reference
+          .doc(autoId)
+          .update({'toppings': FieldValue.arrayUnion(topping)});
+    } catch (e) {
+      'Error while addOption(): ' + e.toString();
+    }
+  }
+
+  Future<void> clearToppings(String autoId) async {
+    try {
+      await _reference.doc(autoId).update({'toppings': FieldValue.delete()});
+    } catch (e) {
+      'Error while addOption(): ' + e.toString();
+    }
+  }
+
   //get the current pizza via stream
   Stream<DocumentSnapshot> getPizza(String autoId) {
     return _reference.doc(autoId).snapshots();

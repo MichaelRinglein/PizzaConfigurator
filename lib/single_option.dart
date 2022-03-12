@@ -108,7 +108,32 @@ class _SingleOptionState extends State<SingleOption> {
         _sauce = chosenOption;
         _costSauce = chosenCost;
       });
+    } else if (option == 'toppings') {
+      List alreadySelectedToppings = [];
+      /*
+      for (final i in _toppings) {
+        alreadySelectedToppings.add(i.elementAt(0).toString());
+      }
+      */
+
+      if (!alreadySelectedToppings.contains(chosenOption)) {
+        _toppings.insert(_toppings.length, chosenOption);
+        _toppings.insert(_toppings.length, chosenCost);
+      }
+
+      setState(() {
+        _toppings = _toppings;
+      });
+
+      print('_toppings are now: ' + _toppings.toString());
     }
+  }
+
+  _clearOptions() async {
+    await _firebaseServices.clearToppings(widget.autoId!);
+    setState(() {
+      _toppings = [];
+    });
   }
 
   @override
@@ -142,7 +167,9 @@ class _SingleOptionState extends State<SingleOption> {
             child: GestureDetector(
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  color: _size == option['text'] || _sauce == option['text']
+                  color: _size == option['text'] ||
+                          _sauce == option['text'] ||
+                          _toppings.contains(option['text'])
                       ? Colors.grey[200]
                       : Colors.transparent,
                   child: Column(
@@ -189,12 +216,43 @@ class _SingleOptionState extends State<SingleOption> {
                       option['text'],
                       option['cost'],
                     );
+                  } else if (widget.option == 'toppings') {
+                    await _firebaseServices.addTopping(
+                      widget.autoId!,
+                      'toppings',
+                      _toppings,
+                      //['data1', 'data2', 'data3'],
+                      //option['text'],
+                      option['cost'],
+                    );
                   }
                   markOption(widget.option!, option['text'], option['cost']);
                 }),
           );
         },
-      ))
+      )),
+      widget.option == 'toppings'
+          ? Column(
+              children: [
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.delete),
+                  label: const Text(
+                    'Clear all toppings',
+                  ),
+                  onPressed: () => _clearOptions(),
+                  style: ButtonStyle(
+                    side: MaterialStateProperty.all<BorderSide>(
+                        const BorderSide(color: Colors.red)),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+              ],
+            )
+          : Container(),
     ]);
     //return Container();
   }
