@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pizzaconfigurator/database/firestore_methods.dart';
 import 'package:pizzaconfigurator/options/size.dart';
+import 'package:pizzaconfigurator/pizza_provider.dart';
+import 'package:provider/provider.dart';
 
 class SingleOption extends StatefulWidget {
-  final String? autoId;
   final VoidCallback? onCountSelected;
   final Function(List)? onCountChange;
   final String? option;
   const SingleOption({
     Key? key,
-    this.autoId,
     this.option,
     this.onCountSelected,
     @required this.onCountChange,
@@ -124,17 +124,16 @@ class _SingleOptionState extends State<SingleOption> {
       setState(() {
         _toppings = _toppings;
       });
-
-      print('_toppings are now: ' + _toppings.toString());
     }
   }
-
+/*
   _clearOptions() async {
     await _firebaseServices.clearToppings(widget.autoId!);
     setState(() {
       _toppings = [];
     });
   }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -199,8 +198,19 @@ class _SingleOptionState extends State<SingleOption> {
                     ],
                   ),
                 ),
-                onTap: () async {
+                onTap: () {
+                  markOption(widget.option!, option['text'], option['cost']);
+                  Provider.of<PizzaProvider>(context, listen: false)
+                      .addOptionToPizza(widget.option!, option['text'],
+                          option['cost'], option['image']);
+                  /*
                   if (widget.option == 'size') {
+                    
+                    Provider.of<PizzaProvider>(context, listen: false)
+                        .addOptionToPizza(widget.option!, option['text'],
+                            option['cost'], option['image']);
+                    
+                    /*
                     await _firebaseServices.addOption(
                       widget.autoId!,
                       'size',
@@ -208,7 +218,9 @@ class _SingleOptionState extends State<SingleOption> {
                       option['text'],
                       option['cost'],
                     );
+                    */
                   } else if (widget.option == 'sauce') {
+                    /*
                     await _firebaseServices.addOption(
                       widget.autoId!,
                       'sauce',
@@ -216,17 +228,21 @@ class _SingleOptionState extends State<SingleOption> {
                       option['text'],
                       option['cost'],
                     );
+                    */
                   } else if (widget.option == 'toppings') {
+                    /*
                     await _firebaseServices.addTopping(
                       widget.autoId!,
                       'toppings',
-                      _toppings,
+                      //_toppings,
                       //['data1', 'data2', 'data3'],
-                      //option['text'],
+                      option['text'],
                       option['cost'],
                     );
+                    */
+                    
                   }
-                  markOption(widget.option!, option['text'], option['cost']);
+                  */
                 }),
           );
         },
@@ -239,7 +255,7 @@ class _SingleOptionState extends State<SingleOption> {
                   label: const Text(
                     'Clear all toppings',
                   ),
-                  onPressed: () => _clearOptions(),
+                  onPressed: () => {},
                   style: ButtonStyle(
                     side: MaterialStateProperty.all<BorderSide>(
                         const BorderSide(color: Colors.red)),
@@ -254,6 +270,5 @@ class _SingleOptionState extends State<SingleOption> {
             )
           : Container(),
     ]);
-    //return Container();
   }
 }

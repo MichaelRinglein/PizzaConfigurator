@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pizzaconfigurator/pizza_provider.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 import 'package:pizzaconfigurator/database/firestore_methods.dart';
@@ -12,7 +14,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => PizzaProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -166,12 +173,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   'Start!',
                   style: TextStyle(fontSize: 18),
                 ),
-                onPressed: () async {
-                  await _firebaseServices.createNewPizza(autoId);
+                onPressed: () {
+                  //await _firebaseServices.createNewPizza(autoId);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Size(autoId: autoId),
+                      builder: (context) => Size(),
                     ),
                   );
                 },

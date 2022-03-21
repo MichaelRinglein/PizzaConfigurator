@@ -36,11 +36,14 @@ class FirebaseServices {
   }
 
   Future<void> addTopping(
-      String autoId, String part, List topping, double toppingCost) async {
+      String autoId, String part, String topping, double toppingCost) async {
     try {
       await _reference
           .doc(autoId)
-          .update({'toppings': FieldValue.arrayUnion(topping)});
+          .collection('toppings')
+          .doc(topping)
+          .set({'cost': toppingCost});
+      //.update({'toppings': FieldValue.arrayUnion(topping)});
     } catch (e) {
       'Error while addOption(): ' + e.toString();
     }
@@ -57,5 +60,9 @@ class FirebaseServices {
   //get the current pizza via stream
   Stream<DocumentSnapshot> getPizza(String autoId) {
     return _reference.doc(autoId).snapshots();
+  }
+
+  Stream<QuerySnapshot> getToppings(String autoId) {
+    return _reference.doc(autoId).collection('toppings').snapshots();
   }
 }

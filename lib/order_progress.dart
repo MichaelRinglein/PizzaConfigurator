@@ -2,44 +2,77 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pizzaconfigurator/database/firestore_methods.dart';
 import 'package:pizzaconfigurator/global/loading.dart';
+import 'package:pizzaconfigurator/pizza_provider.dart';
+import 'package:provider/provider.dart';
 
 class OrderProgress extends StatefulWidget {
-  final String? autoId;
-  const OrderProgress({Key? key, this.autoId}) : super(key: key);
+  const OrderProgress({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<OrderProgress> createState() => _OrderProgressState();
 }
 
 class _OrderProgressState extends State<OrderProgress> {
-  final FirebaseServices _firebaseServices = FirebaseServices();
+  //final FirebaseServices _firebaseServices = FirebaseServices();
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<DocumentSnapshot>(
-        stream: _firebaseServices.getPizza(widget.autoId!),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return const Text('Something went wrong');
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              children: const <Widget>[
-                Loading(),
+    return Consumer<PizzaProvider>(
+      builder: (context, value, child) {
+        return Column(
+          children: [
+            Row(
+              children: [
+                Text(
+                  value.size.isNotEmpty ? value.size['text'] : '',
+                  style: const TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(
+                  width: 25.0,
+                ),
+                Text(
+                  value.size.isNotEmpty
+                      ? '\$ ' + value.size['cost'].toString()
+                      : '',
+                  style: const TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
               ],
-            );
-          }
-
-          if (snapshot.hasData) {}
-          return Column(
-            children: [
+            ),
+            Row(
+              children: [
+                Text(
+                  value.sauce.isNotEmpty ? value.sauce['text'] : '',
+                  style: const TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(
+                  width: 25.0,
+                ),
+                Text(
+                  value.sauce.isNotEmpty
+                      ? '\$ ' + value.sauce['cost'].toString()
+                      : '',
+                  style: const TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+            for (int i = 1; i <= value.toppings.length; i++)
               Row(
                 children: [
+                  //Text('i is: ' + i.toString()),
                   Text(
-                    snapshot.data!.get('size'),
+                    value.toppings.isNotEmpty
+                        ? (i.toString() + value.toppings[0]['text'])
+                        : '',
                     style: const TextStyle(
                       fontSize: 18,
                     ),
@@ -48,38 +81,18 @@ class _OrderProgressState extends State<OrderProgress> {
                     width: 25.0,
                   ),
                   Text(
-                    snapshot.data!.get('sizeCost') == 0.0
-                        ? ''
-                        : '\$' + snapshot.data!.get('sizeCost').toString(),
+                    value.toppings.isNotEmpty
+                        ? '\$ ' + value.toppings[0]['cost'].toString()
+                        : '',
                     style: const TextStyle(
                       fontSize: 18,
                     ),
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Text(
-                    snapshot.data!.get('sauce'),
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 25.0,
-                  ),
-                  Text(
-                    snapshot.data!.get('sauceCost') == 0.0
-                        ? ''
-                        : '\$' + snapshot.data!.get('sauceCost').toString(),
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          );
-        });
+          ],
+        );
+      },
+    );
   }
 }
