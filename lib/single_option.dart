@@ -83,7 +83,7 @@ class _SingleOptionState extends State<SingleOption> {
       'image': 'pineapple.png',
     },
     {
-      'text': 'Extra Cheese',
+      'text': 'Cheese',
       'cost': 1.2,
       'image': 'cheese.png',
     },
@@ -95,7 +95,8 @@ class _SingleOptionState extends State<SingleOption> {
   double _costSize = 0.0;
   String _sauce = '';
   double _costSauce = 0.0;
-  List _toppings = [];
+  //List _toppings = [];
+  Map _toppings = {};
 
   markOption(String option, String chosenOption, double chosenCost) {
     if (option == 'size') {
@@ -109,31 +110,23 @@ class _SingleOptionState extends State<SingleOption> {
         _costSauce = chosenCost;
       });
     } else if (option == 'toppings') {
-      List alreadySelectedToppings = [];
-      /*
-      for (final i in _toppings) {
-        alreadySelectedToppings.add(i.elementAt(0).toString());
+      if (!_toppings.containsValue(chosenOption)) {
+        _toppings[chosenOption] = chosenCost;
       }
-      */
-
-      if (!alreadySelectedToppings.contains(chosenOption)) {
-        _toppings.insert(_toppings.length, chosenOption);
-        _toppings.insert(_toppings.length, chosenCost);
-      }
+      print('_toppings is: ' + _toppings.toString());
 
       setState(() {
         _toppings = _toppings;
       });
     }
   }
-/*
-  _clearOptions() async {
-    await _firebaseServices.clearToppings(widget.autoId!);
+
+  _clearToppings() async {
+    Provider.of<PizzaProvider>(context, listen: false).deleteToppings();
     setState(() {
-      _toppings = [];
+      _toppings = {};
     });
   }
-  */
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +161,7 @@ class _SingleOptionState extends State<SingleOption> {
                   padding: const EdgeInsets.all(10),
                   color: _size == option['text'] ||
                           _sauce == option['text'] ||
-                          _toppings.contains(option['text'])
+                          _toppings.containsKey(option['text'])
                       ? Colors.grey[200]
                       : Colors.transparent,
                   child: Column(
@@ -203,46 +196,6 @@ class _SingleOptionState extends State<SingleOption> {
                   Provider.of<PizzaProvider>(context, listen: false)
                       .addOptionToPizza(widget.option!, option['text'],
                           option['cost'], option['image']);
-                  /*
-                  if (widget.option == 'size') {
-                    
-                    Provider.of<PizzaProvider>(context, listen: false)
-                        .addOptionToPizza(widget.option!, option['text'],
-                            option['cost'], option['image']);
-                    
-                    /*
-                    await _firebaseServices.addOption(
-                      widget.autoId!,
-                      'size',
-                      'sizeCost',
-                      option['text'],
-                      option['cost'],
-                    );
-                    */
-                  } else if (widget.option == 'sauce') {
-                    /*
-                    await _firebaseServices.addOption(
-                      widget.autoId!,
-                      'sauce',
-                      'sauceCost',
-                      option['text'],
-                      option['cost'],
-                    );
-                    */
-                  } else if (widget.option == 'toppings') {
-                    /*
-                    await _firebaseServices.addTopping(
-                      widget.autoId!,
-                      'toppings',
-                      //_toppings,
-                      //['data1', 'data2', 'data3'],
-                      option['text'],
-                      option['cost'],
-                    );
-                    */
-                    
-                  }
-                  */
                 }),
           );
         },
@@ -255,7 +208,7 @@ class _SingleOptionState extends State<SingleOption> {
                   label: const Text(
                     'Clear all toppings',
                   ),
-                  onPressed: () => {},
+                  onPressed: () => {_clearToppings()},
                   style: ButtonStyle(
                     side: MaterialStateProperty.all<BorderSide>(
                         const BorderSide(color: Colors.red)),

@@ -131,8 +131,7 @@ class _ToppingsState extends State<Toppings> {
                               : Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          Result(createdPizza: [])),
+                                      builder: (context) => Result()),
                                 );
                         },
                         style: ButtonStyle(

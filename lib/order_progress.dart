@@ -16,11 +16,14 @@ class OrderProgress extends StatefulWidget {
 
 class _OrderProgressState extends State<OrderProgress> {
   //final FirebaseServices _firebaseServices = FirebaseServices();
+  Map newPizzaMap = {};
 
   @override
   Widget build(BuildContext context) {
     return Consumer<PizzaProvider>(
       builder: (context, value, child) {
+        //print('value is: ' + value.toString());
+
         return Column(
           children: [
             Row(
@@ -65,14 +68,13 @@ class _OrderProgressState extends State<OrderProgress> {
                 ),
               ],
             ),
-            for (int i = 1; i <= value.toppings.length; i++)
+            //for (int i = 0; i <= value.toppings.length; i++)
+            for (var entry in value.toppings.entries)
               Row(
                 children: [
                   //Text('i is: ' + i.toString()),
                   Text(
-                    value.toppings.isNotEmpty
-                        ? (i.toString() + value.toppings[0]['text'])
-                        : '',
+                    value.toppings.isNotEmpty ? entry.key : '',
                     style: const TextStyle(
                       fontSize: 18,
                     ),
@@ -82,7 +84,7 @@ class _OrderProgressState extends State<OrderProgress> {
                   ),
                   Text(
                     value.toppings.isNotEmpty
-                        ? '\$ ' + value.toppings[0]['cost'].toString()
+                        ? '\$ ' + entry.value.toString()
                         : '',
                     style: const TextStyle(
                       fontSize: 18,
