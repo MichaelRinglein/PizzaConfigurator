@@ -1,8 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:pizzaconfigurator/database/firestore_methods.dart';
-import 'package:pizzaconfigurator/options/size.dart';
 import 'package:pizzaconfigurator/pizza_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -23,8 +19,6 @@ class SingleOption extends StatefulWidget {
 }
 
 class _SingleOptionState extends State<SingleOption> {
-  FirebaseServices _firebaseServices = FirebaseServices();
-
   final List size = [
     {
       'text': 'Small (25cm)',
@@ -113,8 +107,6 @@ class _SingleOptionState extends State<SingleOption> {
       if (!_toppings.containsValue(chosenOption)) {
         _toppings[chosenOption] = chosenCost;
       }
-      print('_toppings is: ' + _toppings.toString());
-
       setState(() {
         _toppings = _toppings;
       });

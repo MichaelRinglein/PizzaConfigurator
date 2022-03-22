@@ -6,7 +6,7 @@ class PizzaProvider extends ChangeNotifier {
   Map toppings = {};
   int indexToppings = 0;
   double priceToppings = 0.0;
-  double totalPrice = 0.0;
+  Map totalPrice = {};
 
   void addOptionToPizza(
     String part,
@@ -18,24 +18,25 @@ class PizzaProvider extends ChangeNotifier {
       size['text'] = option;
       size['cost'] = optionCost;
       size['image'] = image;
+      totalPrice['costSize'] = optionCost;
     } else if (part == 'sauce') {
       sauce['text'] = option;
       sauce['cost'] = optionCost;
       sauce['image'] = image;
+      totalPrice['costSauce'] = optionCost;
     } else if (part == 'toppings') {
-      if (!toppings.containsValue(option)) {
+      if (!toppings.containsKey(option)) {
         toppings[option] = optionCost;
       }
     }
 
+    //get the price from the toppings map
+    priceToppings = 0.0;
     for (var entry in toppings.entries) {
       priceToppings += entry.value;
     }
+    totalPrice['costToppings'] = priceToppings;
 
-    totalPrice = size['cost'] + sauce['cost'] + priceToppings;
-    //totalPrice = 20.0;
-    print('toppings in Provider is $toppings');
-    print('toppings.length is: ' + toppings.length.toString());
     notifyListeners();
   }
 

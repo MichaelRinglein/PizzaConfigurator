@@ -1,7 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pizzaconfigurator/database/firestore_methods.dart';
-import 'package:pizzaconfigurator/global/loading.dart';
 import 'package:pizzaconfigurator/pizza_provider.dart';
 import 'package:provider/provider.dart';
 

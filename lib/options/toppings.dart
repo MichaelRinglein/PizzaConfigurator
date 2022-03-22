@@ -1,9 +1,4 @@
-import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pizzaconfigurator/database/firestore_methods.dart';
-import 'package:pizzaconfigurator/global/loading.dart';
 import 'package:pizzaconfigurator/main.dart';
 import 'package:pizzaconfigurator/order_progress.dart';
 import 'package:pizzaconfigurator/pizza_provider.dart';
@@ -131,7 +126,7 @@ class _ToppingsState extends State<Toppings> {
                               : Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Result()),
+                                      builder: (context) => const Result()),
                                 );
                         },
                         style: ButtonStyle(

@@ -1,9 +1,4 @@
-import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pizzaconfigurator/database/firestore_methods.dart';
-import 'package:pizzaconfigurator/global/loading.dart';
 import 'package:pizzaconfigurator/main.dart';
 import 'package:pizzaconfigurator/options/sauce.dart';
 import 'package:pizzaconfigurator/order_progress.dart';
@@ -133,7 +128,7 @@ class _SizeState extends State<Size> {
                                 : Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Sauce()),
+                                        builder: (context) => const Sauce()),
                                   );
                           },
                           style: ButtonStyle(

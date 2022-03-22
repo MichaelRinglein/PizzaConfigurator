@@ -3,8 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:pizzaconfigurator/pizza_provider.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-
-import 'package:pizzaconfigurator/database/firestore_methods.dart';
 import 'package:pizzaconfigurator/options/size.dart';
 import 'package:pizzaconfigurator/options/sauce.dart';
 import 'package:pizzaconfigurator/options/toppings.dart';
@@ -134,7 +132,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  FirebaseServices _firebaseServices = FirebaseServices();
   final String autoId = DateTime.now().microsecondsSinceEpoch.toString();
 
   @override
@@ -178,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Size(),
+                      builder: (context) => const Size(),
                     ),
                   );
                 },

@@ -12,15 +12,7 @@ class Result extends StatefulWidget {
 
 class _ResultState extends State<Result> {
   final String _optionText = 'Your pizza is ready';
-
-  String _size = '';
-  double _costSize = 0.0;
-  String _sauce = '';
-  double _costSauce = 0.0;
-  List _toppings = [];
-  double _costToppings = 0.0;
-
-  double _priceToppings = 0.0;
+  double _totalPrice = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +37,8 @@ class _ResultState extends State<Result> {
       ),
       body: Consumer<PizzaProvider>(
         builder: (context, value, child) {
+          value.totalPrice.forEach((key, value) => _totalPrice += value);
+
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -269,7 +263,7 @@ class _ResultState extends State<Result> {
                               ),
                             ),
                             Text(
-                              '\$' + value.totalPrice.toStringAsFixed(2),
+                              '\$' + _totalPrice.toString(),
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
