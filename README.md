@@ -4,13 +4,19 @@ A product configurator for configuring a pizza.
 
 ## State Management
 
-I thought about using either Bloc, Inherited Widget or flutter redux for the state management.
+~I thought about using either Bloc, Inherited Widget or flutter redux for the state management.~
 
-But since the Firebase is anyway needed later for Authentification, I use Firebase (Firestore) for state management in this app. 
+~But since the Firebase is anyway needed later for Authentification, I use Firebase (Firestore) for state management in this app. ~
+
+Using `Firebase` and it snapshots as state management solution did work in general for simple single strings and lists. 
+But I quickly reached the limitations of feasability due to the not-unified and nested lists/maps in this app (especially with the toppings for the pizza).
+Thus I decided to go for the `Provider` to manage the state instead, as I already did in other apps.
 
 
 ## Packages Used (all with Null safety)
 
+- provider
+- intl
 - flutter_launcher_icons
 
 ## Live Demos
@@ -31,24 +37,9 @@ After the toppings are chosen, the user gets redirected to a overview of the con
 
 After reading about the pizza, are you hungry yet? Behold, there is more to come!
 
-### State Management
-
-#### Navigating the Screens
-The App beginns in `main.dart`. On click on the 'Start!' button, a pizza is initialized via the `createNewPizza()` method in `firestore_methods`. 
-The pizza is a document with the fields 'size', 'sauce' and 'toppings'.
-The id for the document is the `autoId` which is generated via a `DateTime.now().microsecondsSinceEpoch`. This `autoId` is used throuout the following steps.
-
-After this initializing of the pizza, The 'Start!' button navigates to the next screen, the `Size`. `Size` takes the `autoId` as parameter.
-
-`Size` is basically a `StreamBuilder` widget which gets the already generated pizza from the Firestore via the `_firebaseServices.getPizza()` method in `firestore_methods`. 
-On click on one of the options, the pizza in the FireStore is updated via the `addOption()` method in `firestore_methods`.
-
-The same flow applies also to the following `Sauce` and `Toppings` Widgets.
-
-#### Order Progress among the Screens (order_progress.dart)
+### Order Progress among the Screens (order_progress.dart)
 In the bottom of the Screens size, sauce and toppings is always the order process visible (items that the user has chosen). 
 It's in the file `order_progress.dart`. 
-This is a `StreamBuilder` which takes the `getPizza()` from `firestore_methods` as well.
 
 ## To Do Next
 
