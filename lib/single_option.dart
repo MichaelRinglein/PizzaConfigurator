@@ -23,17 +23,17 @@ class _SingleOptionState extends State<SingleOption> {
     {
       'text': 'Small (25cm)',
       'cost': 2.0,
-      'image': 'pizza.png',
+      'image': 'Pizza.png',
     },
     {
       'text': 'Medium (30cm)',
       'cost': 3.50,
-      'image': 'pizza.png',
+      'image': 'Pizza.png',
     },
     {
       'text': 'Large (35cm)',
       'cost': 4.0,
-      'image': 'pizza.png',
+      'image': 'Pizza.png',
     }
   ];
 
@@ -41,12 +41,12 @@ class _SingleOptionState extends State<SingleOption> {
     {
       'text': 'Tomato sauce',
       'cost': 0.5,
-      'image': 'tomatoes.png',
+      'image': 'Tomatoes.png',
     },
     {
       'text': 'Tomato sauce spicy',
       'cost': 0.5,
-      'image': 'tomatoes.png',
+      'image': 'Tomatoes.png',
     },
   ];
 
@@ -54,32 +54,32 @@ class _SingleOptionState extends State<SingleOption> {
     {
       'text': 'Bacon',
       'cost': 2.7,
-      'image': 'bacon.png',
+      'image': 'Bacon.png',
     },
     {
       'text': 'Bellpepper',
       'cost': 0.8,
-      'image': 'bellpepper.png',
+      'image': 'Bellpepper.png',
     },
     {
       'text': 'Olives',
       'cost': 1.5,
-      'image': 'olives.png',
+      'image': 'Olives.png',
     },
     {
       'text': 'Onions',
       'cost': 0.6,
-      'image': 'onions.png',
+      'image': 'Onions.png',
     },
     {
       'text': 'Pineapple',
       'cost': 1.6,
-      'image': 'pineapple.png',
+      'image': 'Pineapple.png',
     },
     {
       'text': 'Cheese',
       'cost': 1.2,
-      'image': 'cheese.png',
+      'image': 'Cheese.png',
     },
   ];
 

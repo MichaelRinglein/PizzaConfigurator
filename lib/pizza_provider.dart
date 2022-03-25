@@ -45,4 +45,13 @@ class PizzaProvider extends ChangeNotifier {
     priceToppings = 0.0;
     notifyListeners();
   }
+
+  void resetPizza() {
+    size = {};
+    sauce = {};
+    toppings = {};
+    indexToppings = 0;
+    priceToppings = 0.0;
+    totalPrice = {};
+  }
 }

@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:pizzaconfigurator/pizza_provider.dart';
 import 'package:provider/provider.dart';
-import 'firebase_options.dart';
 import 'package:pizzaconfigurator/options/size.dart';
 import 'package:pizzaconfigurator/options/sauce.dart';
 import 'package:pizzaconfigurator/options/toppings.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   runApp(
     ChangeNotifierProvider(
       create: (context) => PizzaProvider(),
@@ -67,29 +61,29 @@ class MyHomePage extends StatefulWidget {
         {
           'text': 'Small (25cm)',
           'cost': 2.0,
-          'image': 'pizza.png',
+          'image': 'Pizza.png',
         },
         {
           'text': 'Medium (30cm)',
           'cost': 3.50,
-          'image': 'pizza.png',
+          'image': 'Pizza.png',
         },
         {
           'text': 'Large (35cm)',
           'cost': 4.0,
-          'image': 'pizza.png',
+          'image': 'Pizza.png',
         },
       },
       'sauce': {
         {
           'text': 'Tomato sauce',
           'cost': 0.5,
-          'image': 'tomatoes.png',
+          'image': 'Tomatoes.png',
         },
         {
           'text': 'Tomato sauce spicy',
           'cost': 0.5,
-          'image': 'tomatoes.png',
+          'image': 'Tomatoes.png',
         },
       },
       'toppings': {
@@ -159,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 20.0,
               ),
               Image.asset(
-                'assets/pizza.png',
+                'assets/Pizza.png',
                 height: 200.0,
               ),
               const SizedBox(
@@ -171,7 +165,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(fontSize: 18),
                 ),
                 onPressed: () {
-                  //await _firebaseServices.createNewPizza(autoId);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

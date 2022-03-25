@@ -35,14 +35,12 @@ After a size is chosen, the user gets redirected to `Sauce` to choose a sauce fo
 After the sauce is chosen, the user gets redirected to `Toppings` to choose one or several toppings to the pizza (Onions, Bacons etc).
 After the toppings are chosen, the user gets redirected to a overview of the configured pizza.
 
-After reading about the pizza, are you hungry yet? Behold, there is more to come!
-
 ### Order Progress among the Screens (order_progress.dart)
 In the bottom of the Screens size, sauce and toppings is always the order process visible (items that the user has chosen). 
 It's in the file `order_progress.dart`. 
 
 ## To Do Next
 
-- [ ] Update Web App and Android version
+- [x] Update Web App and Android version
 - [ ] Full Documentation
 - [ ] iOS Version

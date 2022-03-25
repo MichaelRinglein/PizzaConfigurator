@@ -95,7 +95,7 @@ class _ResultState extends State<Result> {
                               child: Column(
                                 children: [
                                   Image.asset(
-                                    'assets/pizza.png',
+                                    'assets/Pizza.png',
                                     height: 60.0,
                                   ),
                                   const SizedBox(
@@ -154,7 +154,7 @@ class _ResultState extends State<Result> {
                               child: Column(
                                 children: [
                                   Image.asset(
-                                    'assets/tomatoes.png',
+                                    'assets/Tomatoes.png',
                                     height: 60.0,
                                   ),
                                   const SizedBox(
@@ -393,6 +393,7 @@ class FinishPopUp extends StatelessWidget {
               'Start from beginning',
             ),
             onPressed: () {
+              Provider.of<PizzaProvider>(context, listen: false).resetPizza();
               Navigator.pop(context);
               Navigator.push(
                 context,
